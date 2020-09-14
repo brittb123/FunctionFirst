@@ -4,145 +4,166 @@ using System.Text;
 
 namespace HelloWorld
 {
+
+    public struct item
+    {
+
+        public int statBoost;
+    }
     class Game
     {
-        void GetDirection()
-        {
-            Console.WriteLine(" Type forward to go forawrd");
-            Console.WriteLine(" Type back to go back");
-            Console.WriteLine(" Type look to look around");
-          
-        }
-        
-        
-        //entering and exiting rooms
-        void enterRoom(int roomnumber)
-        {
-           
-            switch(roomnumber)
-            {
-                case 0:
-                    Console.WriteLine("You are in the beginning chamber");
-                    break;
-                
-            }
-            GetDirection();
-            string directionChoice = Console.ReadLine();
-            if (directionChoice == "forward")
-            {
-                enterRoom(roomnumber + 1);
-            }
-        }
-        void PotionPouch()
-        {
-            Console.WriteLine("Small health potions: " + numberOfSmallHealth);
-            Console.WriteLine("Medium health potions: " + numberOfMediumHealth);
-            Console.WriteLine("Large health potions: " + numberOfLargeHealth);
-            Console.WriteLine("Press 1 to use a small health potion");
-            Console.WriteLine("Press 2 to use a for medium health potion");
-            Console.WriteLine("Press 3 to use a large health potion");
-
-            //Potion pouch selection
-            char pouchchoice = Console.ReadKey().KeyChar;
-            
-            
 
 
-                if (pouchchoice == '1' && numberOfSmallHealth > 0)
-                {
-                    Console.WriteLine("You take a drink and toss the bottle restoring 25 health");
-                    _playerHealth += 20;
-                    PotionMaxHealed();
-                }
-                else if (pouchchoice == '2' && numberOfMediumHealth > 0)
-                {
-                    Console.WriteLine("You take a decent sized glass and drink as fast as possible, " +
-                        "you healed for 50 health");
-                    _playerHealth += 50;
-                    PotionMaxHealed();
-                }
-                else if (pouchchoice == '3' && numberOfLargeHealth > 0)
-                {
-                    Console.WriteLine("You grab a large jug and drink very fast, " +
-                        "you restore 75 health");
-                    _playerHealth += 75;
-                    PotionMaxHealed();
-                }
-            
+
+        bool _gameOver = false;
+        Player player1 = new Player("Gim", 100, 15);
+        Player player2 = new Player("Curi", 150, 20);
+        item longsword;
+        item dagger;
+
+
+
+        public void InitalIems()
+        {
+            longsword.statBoost = 15;
+            dagger.statBoost = 10;
         }
 
-      
-        //potions and poisons
-        float smallHealthPotion = 25;
-        int numberOfSmallHealth = 0;
-        int numberOfMediumHealth = 0;
-        int numberOfLargeHealth = 0;
-
-        // Potions and health max
-        float _playerHealth = 100.0f;
-        float _maxHealth = 100.0f;
-        float PotionMaxHealed()
-        {
-            if (_playerHealth > _maxHealth)
-            {
-                _playerHealth = 100;
-            }
-            return _playerHealth;
-        }
 
         //Run the game
         public void Run()
         {
             Start();
-            Console.WriteLine("\nYou waken up by a loud thunder and see your in chains in a dark tower");
-            Console.WriteLine("The walls are mossy and made of cobblestone as the floors look new and wooden");
-            Console.WriteLine("A voice in your mind laughs and claims that a book and quill is on the table");
-            Console.WriteLine("You walk to the table and see the book open and ask for your name");
-            string name = Console.ReadLine();
-            Console.WriteLine("So you are " + name + "Victom of tower of Descension?");
-            Console.WriteLine("Press 1 for yes and 2 for No");
-            char readyToBegin = Console.ReadKey().KeyChar;
-            
-            
 
-                if (readyToBegin == '1')
+            while (_gameOver = false)
+            {
+                Update();
+
+
+            }
+            End();
+        }
+
+        public void GetInput(out char input, string option1, string option2, string query)
+        {
+            Console.WriteLine(query);
+            Console.WriteLine("1. " + option1);
+            Console.WriteLine("2. " + option2);
+            input = ' ';
+            while (input != '1' && input != '2')
+            {
+                input = Console.ReadKey().KeyChar;
+
+
+                if (input != '1' && input != '2')
                 {
-                    Console.WriteLine("HAHAHA So " + name + "We will see if you will ascend the Descension Towner!" +
-                        "Begin the Challenege");
+                    Console.WriteLine("Thats not a weapon");
                 }
-                if (readyToBegin == '2')
+                input = ' ';
+                Console.WriteLine("Alright good choice now you player 2");
+                GetInput(out input, "longsword", "dagger", "Which weapon do you want?");
+            }
+        }
+        public void Input(out char input, string option1, string option2, string query)
+        {
+            Console.WriteLine(query);
+            Console.WriteLine("1. " + option1);
+            Console.WriteLine("2. " + option2);
+            input = ' ';
+            while (input != '1' && input != '2')
+            {
+                input = Console.ReadKey().KeyChar;
+
+
+                if (input != '1' && input != '2')
                 {
-                    Console.WriteLine("You dont even know your name? This will be fun to watch you descend. Try again" +
-                        "to remember your name");
-                   
+                    Console.WriteLine("Invalid choice.");
+                }
+            }
+        }
+
+        public void SelectIem()
+        {
+
+            Console.WriteLine("Welcome Players, Player One please choose a weapon");
+            Console.WriteLine("Press 1 for longsword");
+            Console.WriteLine("Press 2 for dagger");
+            char input = Console.ReadKey().KeyChar;
+            while (input != '1' && input != '2')
+            {
+
+                if (input == '1')
+                {
+                    player1.EquipItem(longsword);
+                    player1.PrintStats();
+
+
+
+                }
+
+                else if (input == '2')
+                {
+                    player1.EquipItem(dagger);
+                    player1.PrintStats();
+
+                }
+                Console.WriteLine("Now you may choose a weapon player 2");
+
+
+            }
+        }
+        public void Battle()
+        {
+            Console.WriteLine("Now go!");
+
+            while (player1.GetStillAlive() && player2.GetStillAlive())
+            {
+                player1.PrintStats();
+                player2.PrintStats();
+
+                char input = ' ';
+                GetInput(out input, "Attack", "No", "What do you do player?");
+                if (input == '1')
+                {
+                    player1.Attack(player2);
+
                 }
                 else
                 {
-                    Console.WriteLine(" You wont even make it out of the first room without a name.");
+                    Console.WriteLine("No, you need to hrow a spine and fight!");
                 }
-            
+                input = ' ';
+                GetInput(out input, "Attack", "No", "Your turn to attack player 2");
+                if (input == '1')
+                {
+                    player2.Attack(player1);
+                }
+
+            }
         }
+
+
 
         //Performed once when the game begins
         public void Start()
         {
-            Console.WriteLine("'Descension is always a step to Ascension'");
-            Console.WriteLine("'You mock it but, Ha I will make sure You will learn that in person'");
-            Console.ReadKey();
+
+            InitalIems();
+            SelectIem();
         }
 
         //Repeated until the game ends
         public void Update()
         {
 
-          
+
         }
 
-        
+
         //Performed once when the game ends
         public void End()
         {
-         
+
         }
     }
 }
