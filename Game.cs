@@ -125,7 +125,7 @@ namespace HelloWorld
                 {
                     player1.EquipItem(longsword);
                     player1.PrintStats();
-                    
+                    Input(out input, "Press 1 for a longsword", "Press 2 for a dagger", " Press 3 for FireBalls", "Press 4 for shortsword", "Pick a weapon Player Two");
 
 
                 }
@@ -134,9 +134,11 @@ namespace HelloWorld
                 {
                     player1.EquipItem(dagger);
                     player1.PrintStats();
+                    Input(out input, "Press 1 for a longsword", "Press 2 for a dagger", " Press 3 for FireBalls", "Press 4 for shortsword", "Pick a weapon Player Two");
+
 
                 }
-                
+
                 Console.WriteLine("Now you may choose a weapon player 2");
 
 
