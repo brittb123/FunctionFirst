@@ -9,11 +9,25 @@ namespace HelloWorld
         private string _name;
         private int _health;
         private int _damage;
+        public int level;
+        public int strength;
+        public int dexterity;
+        public int healthstat;
+        public int focus;
+        public int aim;
+        public int EXP;
 
         public Player()
         {
+            level = 1;
+            EXP = 0;
             _health = 100;
             _damage = 10;
+            strength = 10;
+            dexterity = 10;
+            healthstat = 10;
+            focus = 10;
+            aim = 10;
         }
 
         public Player(string nameVal, int healthVal, int damageVal)
@@ -22,6 +36,8 @@ namespace HelloWorld
             _health = healthVal;
             _damage = damageVal;
         }
+
+
 
         public void EquipItem(item weapon)
         {
@@ -42,6 +58,8 @@ namespace HelloWorld
         {
             enemy.TakeDamage(_damage);
         }
+
+
         public void PrintStats()
         {
             Console.WriteLine("Name: " + _name);
@@ -56,6 +74,41 @@ namespace HelloWorld
                 _health -= damageVal;
             }
             Console.WriteLine(_name + " took " + damageVal + " damage!!");
+        }
+
+        public void LevelUp()
+        {
+            Console.WriteLine("Well look at you leveling up!");
+            Console.WriteLine("Please choose one to improve!");
+            Console.WriteLine("1. Strength: " + strength);
+            Console.WriteLine("2. Dexterity: " + dexterity);
+            Console.WriteLine("3. Health: " + healthstat);
+            Console.WriteLine("4. Focus: " + focus);
+
+            int choice = Console.ReadKey().KeyChar;
+            switch (choice)
+            {
+                case 1:
+                    strength += 2;
+                    break;
+
+                case 2:
+                    dexterity += 2;
+                    break;
+
+                case 3:
+                    _health += 2;
+                    break;
+
+                case 4:
+                    focus += 5;
+                    break;
+
+                case 5:
+                    aim += 5;
+                    break;
+            }
+
         }
     }
 }

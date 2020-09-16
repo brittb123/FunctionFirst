@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace HelloWorld
 {
+
 
     public struct item
     {
@@ -13,11 +15,13 @@ namespace HelloWorld
     class Game
     {
 
-
+      
 
         bool _gameOver = false;
         Player player1 = new Player("Gim", 100, 15);
         Player player2 = new Player("Curi", 150, 20);
+        
+
         item longsword;
         item dagger;
 
@@ -44,6 +48,7 @@ namespace HelloWorld
             End();
         }
 
+        //Gets player input for various things
         public void GetInput(out char input, string option1, string option2, string query)
         {
             Console.WriteLine(query);
@@ -64,6 +69,8 @@ namespace HelloWorld
                 GetInput(out input, "longsword", "dagger", "Which weapon do you want?");
             }
         }
+
+        //Gets player input for various things also
         public void Input(out char input, string option1, string option2, string query)
         {
             Console.WriteLine(query);
@@ -81,13 +88,35 @@ namespace HelloWorld
                 }
             }
         }
+        public void Input(out char input, string option1, string option2, string option3, string option4, string query)
+        {
+            Console.WriteLine(query);
+            Console.WriteLine("1. " + option1);
+            Console.WriteLine("2. " + option2);
+            Console.WriteLine("3. " + option3);
+            Console.WriteLine("4. " + option4);
+            input = ' ';
+            while (input != '1' && input != '2' && input != '3' && input != 4)
+            {
+                input = Console.ReadKey().KeyChar;
 
+
+                if (input != '1' && input != '2' && input != '3' && input != '4')
+                {
+                    Console.WriteLine("Invalid choice.");
+                }
+            }
+        }
+
+        // Players starting weapons and boosts
         public void SelectIem()
         {
 
             Console.WriteLine("Welcome Players, Player One please choose a weapon");
             Console.WriteLine("Press 1 for longsword");
             Console.WriteLine("Press 2 for dagger");
+            Console.WriteLine("Press 3 for fireballs");
+            Console.WriteLine("Press 4 for shortsword");
             char input = Console.ReadKey().KeyChar;
             while (input != '1' && input != '2')
             {
@@ -96,7 +125,7 @@ namespace HelloWorld
                 {
                     player1.EquipItem(longsword);
                     player1.PrintStats();
-
+                    
 
 
                 }
@@ -107,11 +136,14 @@ namespace HelloWorld
                     player1.PrintStats();
 
                 }
+                
                 Console.WriteLine("Now you may choose a weapon player 2");
 
 
             }
         }
+
+        //When Players enter battle
         public void Battle()
         {
             Console.WriteLine("Now go!");
@@ -138,16 +170,17 @@ namespace HelloWorld
                 {
                     player2.Attack(player1);
                 }
-
+                
             }
         }
 
 
+        
 
         //Performed once when the game begins
         public void Start()
         {
-
+            
             InitalIems();
             SelectIem();
         }
@@ -156,7 +189,7 @@ namespace HelloWorld
         public void Update()
         {
 
-
+            
         }
 
 
