@@ -7,7 +7,7 @@ namespace HelloWorld
 {
 
 
-    public struct item
+    public struct items
     {
 
         public int statBoost;
@@ -15,17 +15,14 @@ namespace HelloWorld
     class Game
     {
 
-      
+
 
         bool _gameOver = false;
-        Player player1 = new Player("Gim", 100, 15);
-        Player player2 = new Player("Curi", 150, 20);
+       public Player player1 = new Player("Gim", 100, 15, 100);
+       public Player player2 = new Player("Curi", 150, 20, 100);
         
-
-        item longsword;
-        item dagger;
-
-
+        items longsword;
+        items dagger;
 
         public void InitalIems()
         {
@@ -43,7 +40,7 @@ namespace HelloWorld
             {
                 Update();
 
-
+                
             }
             End();
         }
@@ -123,16 +120,15 @@ namespace HelloWorld
 
                 if (input == '1')
                 {
-                    player1.EquipItem(longsword);
+                    player1.AddItem(longsword, 0);
                     player1.PrintStats();
-                    Input(out input, "Press 1 for a longsword", "Press 2 for a dagger", " Press 3 for FireBalls", "Press 4 for shortsword", "Pick a weapon Player Two");
-
+                    
 
                 }
 
                 else if (input == '2')
                 {
-                    player1.EquipItem(dagger);
+                    player1.AddItem(dagger, 0);
                     player1.PrintStats();
                     Input(out input, "Press 1 for a longsword", "Press 2 for a dagger", " Press 3 for FireBalls", "Press 4 for shortsword", "Pick a weapon Player Two");
 

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace HelloWorld
 {
     public class Player
     {
+
+
         private string _name;
         private int _health;
         private int _damage;
@@ -16,6 +19,8 @@ namespace HelloWorld
         public int focus;
         public int aim;
         public int EXP;
+        private items[] inventory;
+        
 
         public Player()
         {
@@ -30,18 +35,22 @@ namespace HelloWorld
             aim = 10;
         }
 
-        public Player(string nameVal, int healthVal, int damageVal)
+        public Player(string nameVal, int healthVal, int damageVal, int inventorySize)
         {
             _name = nameVal;
             _health = healthVal;
             _damage = damageVal;
+            inventory = new items[inventorySize];
         }
 
-
-
-        public void EquipItem(item weapon)
+        public void AddItem(items items, int index)
         {
-            _damage += weapon.statBoost;
+            inventory[index] = items;
+        }
+
+        public void EquipItem(int itemIndex)
+        {
+            _damage = inventory[itemIndex].statBoost;
         }
 
         public string GetName()
@@ -109,6 +118,8 @@ namespace HelloWorld
                     break;
             }
 
+
+           
         }
     }
 }
