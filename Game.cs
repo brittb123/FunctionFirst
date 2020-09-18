@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,25 +10,39 @@ namespace HelloWorld
 
     public struct items
     {
-
+        public string name;
         public int statBoost;
     }
     class Game
     {
 
-
-
+        
         bool _gameOver = false;
-       public Player player1 = new Player("Gim", 100, 15, 100);
-       public Player player2 = new Player("Curi", 150, 20, 100);
+       public Player player1 = new Player("Gim", 100, 15, 3);
+       public Player player2 = new Player("Curi", 150, 20, 3);
         
         items longsword;
         items dagger;
-
-        public void InitalIems()
+        items bow;
+        items shortsword;
+        items fireballScrolls;
+        
+       
+        //initializes items
+        public void InitalItems()
         {
-            longsword.statBoost = 15;
+            
+            longsword.statBoost = 25;
+            longsword.name = "longsword";
             dagger.statBoost = 10;
+            dagger.name = "dagger";
+            bow.statBoost = 10;
+            bow.name = "bow";
+            shortsword.statBoost = 15;
+            shortsword.name = "shortsword";
+            fireballScrolls.statBoost = 20;
+            fireballScrolls.name = "Fireball Scrolls";
+            
         }
 
 
@@ -45,8 +60,28 @@ namespace HelloWorld
             End();
         }
 
+        public void GetInput(out char input, string option1, string option2)
+        {
+           
+            Console.WriteLine("1. " + option1);
+            Console.WriteLine("2. " + option2);
+            input = ' ';
+            while (input != '1' && input != '2')
+            {
+                input = Console.ReadKey().KeyChar;
+
+
+                if (input != '1' && input != '2')
+                {
+                    Console.WriteLine("Thats not a weapon");
+                }
+                input = ' ';
+                Console.WriteLine("Alright good choice now you player 2");
+                GetInput(out input, "longsword", "dagger", "Which weapon do you want?");
+            }
+        }
         //Gets player input for various things
-        public void GetInput(out char input, string option1, string option2, string query)
+        public void GetInput(out char input, string option1, string option2,  string query)
         {
             Console.WriteLine(query);
             Console.WriteLine("1. " + option1);
@@ -105,14 +140,15 @@ namespace HelloWorld
             }
         }
 
+        
         // Players starting weapons and boosts
-        public void SelectIem()
+        public void SelectItem()
         {
 
             Console.WriteLine("Welcome Players, Player One please choose a weapon");
             Console.WriteLine("Press 1 for longsword");
             Console.WriteLine("Press 2 for dagger");
-            Console.WriteLine("Press 3 for fireballs");
+            Console.WriteLine("Press 3 for bow");
             Console.WriteLine("Press 4 for shortsword");
             char input = Console.ReadKey().KeyChar;
             while (input != '1' && input != '2')
@@ -120,7 +156,7 @@ namespace HelloWorld
 
                 if (input == '1')
                 {
-                    player1.AddItem(longsword, 0);
+                    player1.AddItem(longsword, 1);
                     player1.PrintStats();
                     
 
@@ -128,17 +164,37 @@ namespace HelloWorld
 
                 else if (input == '2')
                 {
-                    player1.AddItem(dagger, 0);
+                    player1.AddItem(dagger, 1);
                     player1.PrintStats();
-                    Input(out input, "Press 1 for a longsword", "Press 2 for a dagger", " Press 3 for FireBalls", "Press 4 for shortsword", "Pick a weapon Player Two");
-
-
+                    
+                }
+                else if (input == '3')
+                {
+                    player1.AddItem(bow, 1);
+                }
+                else if (input == '4')
+                {
+                    player1.AddItem(shortsword, 1);
                 }
 
                 Console.WriteLine("Now you may choose a weapon player 2");
 
 
             }
+        }
+
+        public void SwitchWeapons(Player Player)
+        {
+            items[] inventory = player1.GetInv();
+            char input;
+            for(int i = 0; i < inventory.Length; i++)
+            {
+                Console.WriteLine((i + 1) + ". " + inventory[i].name + "Damage: " + inventory[i].statBoost);
+            }
+
+
+
+
         }
 
         //When Players enter battle
@@ -152,7 +208,7 @@ namespace HelloWorld
                 player2.PrintStats();
 
                 char input = ' ';
-                GetInput(out input, "Attack", "No", "What do you do player?");
+                GetInput(out input, "Attack", "Change weapon", "What do you do player?");
                 if (input == '1')
                 {
                     player1.Attack(player2);
@@ -178,15 +234,16 @@ namespace HelloWorld
         //Performed once when the game begins
         public void Start()
         {
-            
-            InitalIems();
-            SelectIem();
+           
+            InitalItems();
+            SelectItem();
+            SwitchWeapons(player1);
         }
 
         //Repeated until the game ends
         public void Update()
         {
-
+            Battle();
             
         }
 

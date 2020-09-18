@@ -8,7 +8,7 @@ namespace HelloWorld
     public class Player
     {
 
-
+        public items[] inventory;
         private string _name;
         private int _health;
         private int _damage;
@@ -19,7 +19,9 @@ namespace HelloWorld
         public int focus;
         public int aim;
         public int EXP;
-        private items[] inventory;
+        private items currentWeapon;
+        private items hands;
+        
         
 
         public Player()
@@ -33,6 +35,13 @@ namespace HelloWorld
             healthstat = 10;
             focus = 10;
             aim = 10;
+            hands.statBoost = 0;
+            hands.name = "Fists";
+        }
+
+        public items[] GetInv()
+        {
+            return inventory;
         }
 
         public Player(string nameVal, int healthVal, int damageVal, int inventorySize)
@@ -48,10 +57,17 @@ namespace HelloWorld
             inventory[index] = items;
         }
 
+        public void UnequipItem()
+        {
+            currentWeapon = hands;
+        }
+
         public void EquipItem(int itemIndex)
         {
-            _damage = inventory[itemIndex].statBoost;
+            currentWeapon = inventory[itemIndex];
         }
+
+      
 
         public string GetName()
         {
@@ -65,6 +81,7 @@ namespace HelloWorld
 
         public void Attack(Player enemy)
         {
+            
             enemy.TakeDamage(_damage);
         }
 
